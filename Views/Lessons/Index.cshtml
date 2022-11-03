@@ -1,0 +1,226 @@
+﻿@model IEnumerable<s318344_Assignment1.Models.LessonModel>
+
+@{
+    ViewData["Title"] = "Lessons";
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Lessons</h1>
+    <a class="btn btn-outline-light" asp-action="Create">Create</a>
+    <button class="btn btn-outline-light" onclick="generateLetters()" >Generate letters</button>
+
+    <hr />
+
+    <h2 class="h4 text-white">Filters</h2>
+
+    <form method="post" class="d-flex gap-4 text-white  ">
+
+        <div class="col">
+            @Html.Label("Term")
+            @Html.DropDownList("SelectTerm", (SelectList) ViewBag.Terms, "Select term", new {@class = "form-control"})
+        </div>
+
+        <div class="col">
+            @Html.Label("Year")
+            @Html.DropDownList("SelectYear", (SelectList) ViewBag.Years,"Select year", new {@class = "form-control"})
+        </div>
+
+        <div class="col d-flex flex-column">
+            @Html.Label("Show only unpaid" )
+            @Html.CheckBox("OnlyUnpaid", new {@class = "form-check-input align-self-start"})
+        </div>
+  
+        <div class="col d-flex gap-2">
+            <input class="btn btn-outline-light ms-auto mt-auto" type="submit" value="Apply" />
+            <a class="btn btn-outline-light  mt-auto" asp-action="Index">Clear</a>
+        </div>
+
+    </form>
+    
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="selectStudentModal" tabindex="-1" aria-labelledby="selectStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="selectStudentModalLabel">Student search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col">
+
+                        <label class="control-label" for="StudentFirstName">First name</label>
+
+                        <input class="form-control" id="StudentFirstName" />
+
+                    </div>
+
+                    <div class="col">
+
+                        <label class="control-label" for="StudentLastName">Last name</label>
+                        <input class="form-control" id="StudentLastName" />
+
+                    </div>
+                </div>
+
+                <div id="studentList">
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="filterStudentData()">Search</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid p-3 ">
+
+    <form id="GenerateLetters" asp-controller="Letters" asp-action="Generate">
+
+    <table class="table table-hover " style=" word-wrap: break-word;">
+    <thead>
+        <tr>
+            <td style="width: 50px;">
+                <input class="form-check-input" type="checkbox" onclick="selectAll()" id="selectall" />
+            </td>
+
+            <th>
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.Student) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId , orderBy = "Student", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-link p-0" style="vertical-align: baseline;" data-bs-toggle="modal" data-bs-target="#selectStudentModal">
+                    (Search)
+                </button>
+            </th>
+            <th>
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.Tutor) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId, orderBy = "Tutor", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+            </th>
+            <th>
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.LessonType) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId, orderBy = "LessonType", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+            </th>
+
+            <th>
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.LessonDateTime) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId,  orderBy = "LessonDateTime", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+            </th>
+
+            <th>
+                @Html.ActionLink( Html.DisplayNameFor(model => model.LessonTerm) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId,  orderBy = "LessonTerm", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+            </th>
+
+            <th>
+                @Html.ActionLink( Html.DisplayNameFor(model => model.LessonYear) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId,  orderBy = "LessonYear", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+            </th>
+
+            <th>
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.Paid) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId, orderBy = "Paid", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td class="border-end">
+                      <input class="form-check-input" name="@Html.DisplayFor(modelItem => item.LessonId)" type="checkbox" value="" id="@Html.DisplayFor(modelItem => item.LessonId)" />
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.StudentFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tutor.TutorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LessonType.LessonTypeFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LessonDateTime)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.LessonTerm)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.LessonYear)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Paid)
+                </td>
+
+                <td>
+                    <div class="dropdown">
+                            <button class="btn " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="material-symbols-outlined">
+                                    more_vert
+                                </i>
+                            </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.LessonId">Edit</a>
+                            <a class="dropdown-item" asp-action="Details" asp-route-id="@item.LessonId">Details</a>
+                            <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.LessonId">Delete</a>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+</form>
+</div>
+
+<script>
+
+    function filterStudentData() {
+        var searchString = "?ReturnToAction=Index" + "&SearchFirstname=" + $("#StudentFirstName").val() + "&SearchSurname=" + $("#StudentLastName").val()
+
+        $.get("@Url.Action("SelectStudent","Lessons")" + searchString,
+            function (data) {
+                $('#studentList').html(data);
+            });
+
+    }
+
+    function selectAll() {
+
+            $('input[type="checkbox"]:not(:disabled)').each(function () {
+                $(this).prop('checked', $("#selectall").is(':checked'));
+            });
+    }
+
+    function generateLetters(){
+        var SelectedItems = 0;
+
+        $('input[type = "checkbox"]:not(:disabled)').each(function () {
+
+            if ($(this).is(":checked")) {
+                SelectedItems += 1;
+            }
+        })
+
+        if (SelectedItems > 0) {
+            $("form").submit();
+
+        } else {
+            alert("Please select at-least one lesson to generate a letter for!");
+        }
+        
+    }
+
+</script>

@@ -1,0 +1,114 @@
+﻿@model s318344_Assignment1.Models.LetterModel
+
+<div id="letter" class="p-4" data-letterID = @Model.LetterId>
+
+    <h4 class="fw-bold">REFERENCE: @Model.letterReference</h4
+
+
+    <p>
+        Dear @Model.Student.StudentFirstName,
+    </p>
+
+    <p>
+        @Model.BeginningComment
+    </p>
+
+    <p>
+        Welcome to all existing students and new students. Term @Model.CurrentTerm will commence @Model.CurrentTermStart
+        Please ensure your payment is finalised by @Model.PaymentFinal. If a student is no longer 
+        lessons, please email the CYCM to be removed off the email list.
+    </p>
+
+    <h4 class="fw-bold">DETAILS OF LESSONS</h4>
+
+                <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>
+                           Lesson date & time
+                        </th>
+
+                        <th>
+                            Tutor
+                        </th>
+
+                        <th>
+                            Paid
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                @foreach (var lesson in Model.Lessons)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(l=> lesson.LessonDateTime)
+                        </td>
+                        <td>
+                            @lesson.Tutor.TutorName
+                        </td>
+  
+                        @if (lesson.Paid)
+                        {
+                            <td> PAID </td>
+                        } else {
+                            <td> NOT PAID </td>
+                        }
+
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+
+    <h4 class="fw-bold">PAYMENT DETAILS</h4>
+    <p>Student: @Model.Student.StudentFullName </p>
+    <p>Outstanding balance: $@Model.OutstandingBalance</p>
+    <p>
+        @*Payment hyperlink tweaked from specifications to correctly supply payment amount and supply student's name in a nicer format.*@
+
+        Please follow the <a href='@("https://webpay.cdu.edu.au/musicschool/tran?tran-type=006&REFNO=" 
+        + Model.letterReference + "&CUSTNAME=" + Model.Student.StudentFullName + "&PARENTSNAME=" + Model.Student.GuardianName + "&UNITAMOUNTICCTAX=" + Model.OutstandingBalance)' > link</a> 
+        to make payment for term @Model.CurrentTerm, @Model.CurrentYear.
+    </p>
+
+
+    <p>Apply for your Sport Voucher for semester @Model.CurrentSemester, @Model.CurrentYear by visiting the <a href="http://www.sportvoucher.nt.gov.au">Sports Voucher website</a>, as schools are no longer providing students with a sport voucher.</p>
+
+    <p> <mark>Alternatively pay via Bank Transfer - EFT - CDU bank details, delete old bank details</mark> </p>
+
+    <h5>New Bank details</h5>
+
+    <ul class="list-unstyled fw-bold">
+        <li>
+            Bank: @Model.BankAccountName
+        </li>
+        <li>
+            Account Name: @Model.BankAccountName
+        </li>
+        <li>
+            BSB Number: @Model.BankAccountBSB
+        </li>
+        <li>
+            Account Number: @Model.BankAccountNumber
+        </li>
+        <li>
+            Reference: CYCM @Model.letterReference @Model.Student.StudentFullName
+        </li>
+    </ul>
+
+    <p class="fst-italic">
+        The CYCM is committed to providing students with quality lessons in a positive learning environment.
+    </p>
+
+    <p>
+        Regards,
+    </p>
+    <p>
+        @Model.EmailSignature
+    </p>
+
+</div>

@@ -1,0 +1,54 @@
+﻿@model s318344_Assignment1.Models.LessonModel
+
+@{
+    ViewData["Title"] = "Delete - Lesson";
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Delete</h1>
+
+    <h2 class="text-dark"> Are you sure you want to delete this record? </h2>
+
+</div>
+
+<div class="container-fluid p-3">
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Student)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Student.PaymentContactNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tutor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tutor.TutorName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LessonType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LessonType.LessonTypeId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LessonDateTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LessonDateTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Paid)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Paid)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="LessonId" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a class="btn btn-outline-dark" asp-action="Index">Back</a>
+    </form>
+</div>

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<s318344_Assignment1.Models.TutorModel>
+
+@{
+    ViewData["Title"] = "Tutors";
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Tutors</h1>
+    <a class="btn btn-outline-light" asp-action="Create">Create</a>
+
+</div>
+
+
+<div class="container-fluid p-3">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TutorName)
+            </th>
+                <th class="text-nowrap">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TutorName)
+            </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="material-symbols-outlined">
+                                    more_vert
+                                </i>
+                            </button>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.TutorId">Edit</a>
+                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.TutorId">Details</a>
+                                <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.TutorId">Delete</a>
+                                <a class="dropdown-item" asp-controller="Lessons" asp-action="Index" asp-route-SelectedTutorId="@item.TutorId">Lessons</a>
+                                <a class="dropdown-item" asp-action="Schedule" asp-route-id="@item.TutorId">Schedule</a>
+
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

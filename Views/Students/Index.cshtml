@@ -1,0 +1,126 @@
+﻿@model IEnumerable<s318344_Assignment1.Models.StudentModel>
+
+@{
+    ViewData["Title"] = "Students";
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Students</h1>
+    <a class="btn btn-outline-light" asp-action="Create">Create</a>
+
+</div>
+
+
+<div class="container-fluid p-3">
+    <table class="table table-hover " style=" word-wrap: break-word;">
+        <thead class="">
+            <tr>
+                <th class="text-nowrap"> 
+
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.StudentID) , "Index", new { orderBy = "StudentID", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+
+                </th>
+            <th class="text-nowrap">
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.StudentFirstName) , "Index", new { orderBy = "StudentFirstName", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+
+                </th>
+
+            <th class="text-nowrap">
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.StudentLastName) , "Index", new { orderBy = "StudentLastName", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+
+                </th>
+
+            <th class="text-nowrap">
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.DOB) , "Index", new { orderBy = "DOB", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+
+                </th>
+
+            <th class="text-nowrap">
+                @Html.ActionLink( Html.DisplayNameFor(model => model.Age) , "Index", new { orderBy = "Age", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+
+            </th>
+
+            <th class="text-nowrap">
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.GuardianName) , "Index", new { orderBy = "GuardianName", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+
+                </th>
+
+            <th class="text-nowrap">
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.PaymentContactEmail) , "Index", new { orderBy = "PaymentContactEmail", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+
+                </th>
+
+            <th class="text-nowrap">
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.PaymentContactNumber) , "Index", new { orderBy = "PaymentContactNumber", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+
+                </th>
+
+
+            <th class="text-nowrap">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudentID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudentFirstName)
+                    </td>
+
+                                        <td>
+                        @Html.DisplayFor(modelItem => item.StudentLastName)
+                    </td>
+
+                                        <td>
+                        @Html.DisplayFor(modelItem => item.DOB)
+
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Age)
+
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GuardianName)
+                    </td>
+
+                                        <td>
+                        @Html.DisplayFor(modelItem => item.PaymentContactEmail)
+                    </td>
+
+                                        <td>
+                        @Html.DisplayFor(modelItem => item.PaymentContactNumber)
+                    </td>
+
+
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="material-symbols-outlined">
+                                    more_vert
+                                </i>
+                            </button>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.StudentID">Edit</a>
+                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.StudentID">Details</a>
+                                <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.StudentID">Delete</a>
+                                <a class="dropdown-item" asp-action="Index" asp-controller="Lessons" asp-route-SelectedStudentId="@item.StudentID">View lessons</a>
+                                <a class="dropdown-item" asp-action="Create" asp-controller="Lessons" asp-route-SelectedStudentID="@item.StudentID">Create lesson</a>
+
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+                }
+        </tbody>
+    </table>
+
+</div>

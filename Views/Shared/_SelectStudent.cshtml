@@ -1,0 +1,43 @@
+﻿@model IEnumerable<s318344_Assignment1.Models.StudentModel>
+
+<table class="table" style="table-layout: fixed; word-wrap: break-word;">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentID)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.StudentFullName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.DOB)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (StudentModel s in ViewBag.Students)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => s.StudentID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => s.StudentFullName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => s.DOB)
+                </td>
+
+                <td>
+                    <a asp-action="@ViewBag.ReturnTo" asp-route-SelectedStudentId="@s.StudentID">Select</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,50 @@
+﻿@model s318344_Assignment1.Models.LessonModel
+
+@{
+    ViewData["Title"] = "Details - Lesson";
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Lesson details</h1>
+
+    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.LessonId">Edit</a>
+    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.LessonId">Delete</a>
+    <a class="btn btn-outline-light" asp-action="Index">Back</a>
+
+</div>
+
+<div class="container-fluid p-3">
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Student)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Student.PaymentContactNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tutor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tutor.TutorName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LessonType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LessonType.LessonTypeId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LessonDateTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LessonDateTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Paid)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Paid)
+        </dd>
+    </dl>
+</div>

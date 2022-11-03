@@ -1,0 +1,123 @@
+﻿@model s318344_Assignment1.Models.TutorModel
+
+@{
+    ViewData["Title"] = "Schedule - " + Model.TutorName;
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Schedule</h1>
+
+    <h2 class="text-dark">@Html.DisplayFor(model => model.TutorName)</h2>
+
+    <a class="btn btn-outline-light" asp-controller="Lessons" asp-action="Index" asp-route-SelectedTutorId="@Model.TutorId">All lessons</a>
+
+</div>
+
+<div id='calendar' class="mt-2" data-TutorId=@Model.TutorId></div>
+
+@*
+Calendar source = https://fullcalendar.io/
+*@
+
+@section AddToHead {
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
+    <link href="@Url.Content("https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.css")" rel="stylesheet" type="text/css" />
+    
+}
+
+@section Scripts {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+
+        var events = [];
+
+        function GetTutorID() {
+            var sPageURL = window.location.href;
+            var indexOfLastSlash = sPageURL.lastIndexOf("/");
+
+            if (indexOfLastSlash > 0 && sPageURL.length - 1 != indexOfLastSlash)
+                return sPageURL.substring(indexOfLastSlash + 1);
+            else
+                return 0;
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/Tutors/GetLessons",
+                data: { id: GetTutorID },
+            success: function (data) {
+                $.each(data, function (i,v){
+
+                    console.log(v);
+
+                    events.push({
+                        title: v.studentFullName,
+                       // description: v.Instrument,
+                        start: v.lessonDateTime,
+                        end: v.lessonFinish
+                    });
+                    console.log(events);
+                })
+                
+                Calendar(events);
+            },
+            error: function (event) {
+                alert('failed');
+            }
+        })
+        
+
+        
+
+        function Calendar(events) {
+
+                var calendarElement = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarElement, {
+
+                    themeSystem: 'bootstrap5',
+                  
+                    initialView: 'timeGridWeek',
+                    allDaySlot: false,
+                    initialDate: new Date(),
+
+                    selectable: true,
+
+                    views: {
+
+                        timeGrid: {
+                            slotMinTime: "8:00:00",
+                            slotMaxTime: "18:00:00"
+                        }
+                    },
+
+                    dayClick: function (date, allDay, jsEvent, view) {
+
+                            // Clicked on the entire day
+                            $('.calendar')
+                            .fullCalendar('changeView', 'agendaDay')
+                                .fullCalendar('gotoDate',
+                                    date.getFullYear(), date.getMonth(), date.getDate());
+                    },
+
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+
+                    events: events
+                });
+                calendar.render()
+        } 
+
+
+
+    })
+
+</script>
+}

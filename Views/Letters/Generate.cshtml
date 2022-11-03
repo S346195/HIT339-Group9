@@ -1,0 +1,112 @@
+﻿@model s318344_Assignment1.Models.LetterModel
+
+@{
+    ViewData["Title"] = "Generate Letters";
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Generate Letters</h1>
+    <a class="btn btn-outline-light" asp-action="LettersConfirmed">Send</a>
+</div>
+
+
+<div class="container-fluid p-3 ">
+
+    @using (Html.BeginForm("Confirmation", "Letters", FormMethod.Post))
+    {
+
+    @foreach (LetterModel letter in ViewBag.Letters)
+    {
+
+        <h2>
+           Letter for: @letter.Student.StudentFullName
+        </h2>
+
+            <h3 class="h5">Included lessons</h3>
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>
+                           Lesson date & time
+                        </th>
+
+                        <th>
+                            Tutor
+                        </th>
+
+                        <th>
+                            Paid
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                @foreach (var lesson in letter.Lessons)
+                {
+                    <tr>
+                        <td>
+                            @lesson.LessonDateTime
+                        </td>
+                        <td>
+                            @lesson.Tutor.TutorName
+                        </td>
+                        <td>
+                            @lesson.Paid
+                        </td>
+                    </tr>
+                }
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td class="fw-bold" colspan="2">
+                            @Html.LabelFor(model=> model.OutstandingBalance,  new {@class="control-label d-block"})
+                        </td>
+                        <td class="fw-bold">
+                            $@letter.OutstandingBalance
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <h3 class="h5">Letter content</h3>
+            @Html.LabelFor(model=> model.BeginningComment,  new {@class="control-label d-block"})
+            @Html.TextAreaFor(model=> model.BeginningComment, new {@class="form-control p-1 border d-block"} )
+
+            <fieldset class="input-group mt-4 mb-4 d-flex justify-content-between">
+                <legend>Bank account details</legend>
+
+                <label asp-for="BankName" class="form-label d-block">
+                    @Html.DisplayNameFor(model => model.BankName)
+                    @Html.TextBoxFor(model=> model.BankName, new {@class="form-control border"} )
+                </label>
+
+                <label asp-for="BankAccountName" class="form-label d-block">
+                    @Html.DisplayNameFor(model => model.BankAccountName)
+                    @Html.TextBoxFor(model=> model.BankAccountName, new {@class="form-control border"} )
+                </label>
+
+                <label asp-for="BankAccountBSB" class="form-label d-block">
+                    @Html.DisplayNameFor(model => model.BankAccountBSB)
+                    @Html.TextBoxFor(model=> model.BankAccountBSB, new {@class="form-control border"} )
+                </label>
+
+                <label asp-for="BankAccountNumber" class="form-label d-block">
+                    @Html.DisplayNameFor(model => model.BankAccountNumber)
+                    @Html.TextBoxFor(model=> model.BankAccountNumber, new {@class="form-control border"} )
+                </label>
+
+            </fieldset>
+
+            @Html.LabelFor(model=> model.EmailSignature,  new {@class="control-label d-block"})
+            @Html.TextAreaFor(model=> model.EmailSignature, new {@class="form-control border p-1 d-block"} )
+
+        <hr />
+        }
+    }
+
+</div>
+

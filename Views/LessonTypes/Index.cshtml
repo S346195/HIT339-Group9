@@ -1,0 +1,66 @@
+﻿@model IEnumerable<s318344_Assignment1.Models.LessonTypeModel>
+
+@{
+    ViewData["Title"] = "Lesson Types";
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Lesson Types</h1>
+    <a class="btn btn-outline-light" asp-action="Create">Create</a>
+
+</div>
+
+
+<div class="container-fluid p-3">
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonDuration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonCost)
+            </th>
+                <th class="text-nowrap">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LessonType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LessonDuration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LessonCost)
+            </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="material-symbols-outlined">
+                                    more_vert
+                                </i>
+                            </button>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.LessonTypeId">Edit</a>
+                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.LessonTypeId">Details</a>
+                                <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.LessonTypeId">Delete</a>
+
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

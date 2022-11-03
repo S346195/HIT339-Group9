@@ -1,0 +1,48 @@
+﻿@model s318344_Assignment1.Models.LessonTypeModel
+
+@{
+    ViewData["Title"] = "Edit - Lesson Type";
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Edit</h1>
+
+    <h2 class="text-dark">@Html.DisplayFor(model => model.LessonTypeFullName)</h2>
+
+</div>
+
+
+
+<div class="row d-flex justify-content-center p-3">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="LessonTypeId" />
+            <div class="form-group mb-2">
+                <label asp-for="LessonType" class="control-label"></label>
+                <input asp-for="LessonType" class="form-control" />
+                <span asp-validation-for="LessonType" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="LessonDuration" class="control-label"></label>
+                <input asp-for="LessonDuration" class="form-control" />
+                <span asp-validation-for="LessonDuration" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="LessonCost" class="control-label"></label>
+                <input asp-for="LessonCost" class="form-control" />
+                <span asp-validation-for="LessonCost" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a class="btn btn-outline-dark" asp-action="Index">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
