@@ -6,24 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using s318344_Assignment1.Data;
-using s318344_Assignment1.Models;
+using Group9_Assignment2.Data;
+using Group9_Assignment2.Models;
 
-namespace s318344_Assignment1.Controllers
+namespace Group9_Assignment2.Controllers
 {
     public class LessonsController : Controller
     {
-        private readonly s318344_Assignment1Context _context;
+        private readonly Group9_Assignment2Context _context;
 
-        public LessonsController(s318344_Assignment1Context context)
+        public LessonsController(Group9_Assignment2Context context)
         {
             _context = context;
         }
 
         // GET: Lessons
-        public async Task<IActionResult> Index(int? SelectedStudentId, string? order, string? orderBy, int? SelectYear, int? SelectTerm, bool? OnlyUnpaid, int? SelectedTutorId)
+        public async Task<IActionResult> Index(int? SelectedStudentId, string? order, string? orderBy, int? SelectedInstrumentId, int? SelectYear, int? SelectTerm, bool? OnlyUnpaid, int? SelectedTutorId)
         {
-            var LessonsContext = from l in _context.LessonModel.Include(l => l.LessonType).Include(l => l.Student).Include(l => l.Tutor) select l;
+            var LessonsContext = from l in _context.LessonModel.Include(l => l.LessonType).Include(l=>l.Instrument).Include(l => l.Student).Include(l => l.Tutor).Include(l=>l.Letter) select l;
             
             List<int> Years = LessonsContext.Select(t => t.LessonYear).ToList();
             ViewData["Years"] = new SelectList(Years.Distinct(), "LessonYear");
@@ -47,6 +47,7 @@ namespace s318344_Assignment1.Controllers
                 LessonsContext = LessonsContext.Where(l => (l.LessonDateTime.Month + 2) / 3 == SelectTerm).OrderBy(l=>l.LessonDateTime);
             }
 
+
             switch (orderBy)
             {
                 case "Student":
@@ -64,6 +65,10 @@ namespace s318344_Assignment1.Controllers
                     LessonsContext = order == "asc" ? LessonsContext.OrderBy(s => s.LessonDateTime) : LessonsContext.OrderByDescending(s => s.LessonDateTime);
                     break;
 
+                case "Instrument":
+                    LessonsContext = order == "asc" ? LessonsContext.OrderBy(s => s.Instrument.Make + " " + s.Instrument.Model) : LessonsContext.OrderByDescending(s => s.Instrument.Make + " " + s.Instrument.Model);
+                    break;
+
                 case "LessonTerm":
                     LessonsContext = order == "asc" ? LessonsContext.OrderBy(s => s.LessonDateTime.Month + 2 / 3) : LessonsContext.OrderByDescending(s => s.LessonDateTime.Month + 2 / 3);
                     break;
@@ -76,18 +81,16 @@ namespace s318344_Assignment1.Controllers
                     break;
             
                 default:
-                    LessonsContext = LessonsContext.OrderByDescending(s => s.Student);
+                    LessonsContext = LessonsContext.OrderByDescending(s => s.LessonId);
                     break;
 
             }
 
             ViewBag.order = order;
             ViewBag.orderBy = orderBy;
-
-            
-
             ViewBag.SelectedStudentId = SelectedStudentId;
             ViewBag.SelectedTutorId = SelectedTutorId;
+            ViewBag.SelectedLessonId = SelectedTutorId;
 
 
             if (SelectedStudentId != null)
@@ -98,6 +101,11 @@ namespace s318344_Assignment1.Controllers
             if (SelectedTutorId != null)
             {
                 LessonsContext = LessonsContext.Where(l => l.TutorId == SelectedTutorId);
+            }
+
+            if (SelectedInstrumentId != null)
+            {
+                LessonsContext = LessonsContext.Where(l => l.InstrumentId == SelectedInstrumentId);
             }
 
             return View(await LessonsContext.ToListAsync());
@@ -114,6 +122,7 @@ namespace s318344_Assignment1.Controllers
             var lessonModel = await _context.LessonModel
                 .Include(l => l.LessonType)
                 .Include(l => l.Student)
+                .Include(l => l.Instrument)
                 .Include(l => l.Tutor)
                 .FirstOrDefaultAsync(m => m.LessonId == id);
             if (lessonModel == null)
@@ -141,6 +150,7 @@ namespace s318344_Assignment1.Controllers
 
             ViewData["LessonTypeId"] = new SelectList(_context.Set<LessonTypeModel>(), "LessonTypeId", "LessonTypeFullName");
             ViewData["TutorId"] = new SelectList(_context.Set<TutorModel>(), "TutorId", "TutorName");
+            ViewData["InstrumentId"] = new SelectList(_context.Set<InstrumentModel>(), "InstrumentId", "Instrument");
 
 
             return View();
@@ -151,7 +161,7 @@ namespace s318344_Assignment1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LessonId,StudentId,TutorId,LessonTypeId,LessonDateTime,Paid")] LessonModel lessonModel)
+        public async Task<IActionResult> Create([Bind("LessonId,StudentId,TutorId,LessonTypeId,InstrumentId,LessonDateTime,Paid")] LessonModel lessonModel)
         {
             if (ModelState.IsValid)
             {
@@ -162,6 +172,8 @@ namespace s318344_Assignment1.Controllers
             ViewData["LessonTypeId"] = new SelectList(_context.Set<LessonTypeModel>(), "LessonTypeId", "LessonTypeFullName");
             ViewData["StudentId"] = new SelectList(_context.Set<StudentModel>(), "StudentID", "StudentID", lessonModel.StudentId);
             ViewData["TutorId"] = new SelectList(_context.Set<TutorModel>(), "TutorId", "TutorName", lessonModel.TutorId);
+            ViewData["InstrumentId"] = new SelectList(_context.Set<InstrumentModel>(), "InstrumentId", "Instrument", lessonModel.InstrumentId);
+
             return View(lessonModel);
         }
 
@@ -181,6 +193,8 @@ namespace s318344_Assignment1.Controllers
             ViewData["LessonTypeId"] = new SelectList(_context.Set<LessonTypeModel>(), "LessonTypeId", "LessonTypeFullName", lessonModel.LessonTypeId);
             ViewData["StudentId"] = new SelectList(_context.Set<StudentModel>(), "StudentID", "StudentFullName", lessonModel.StudentId);
             ViewData["TutorId"] = new SelectList(_context.Set<TutorModel>(), "TutorId", "TutorName", lessonModel.TutorId);
+            ViewData["InstrumentId"] = new SelectList(_context.Set<InstrumentModel>(), "InstrumentId", "Instrument", lessonModel.InstrumentId);
+
             return View(lessonModel);
         }
 
@@ -189,7 +203,7 @@ namespace s318344_Assignment1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LessonId,StudentId,TutorId,LessonTypeId,LessonDateTime,Paid")] LessonModel lessonModel)
+        public async Task<IActionResult> Edit(int id, [Bind("LessonId,StudentId,TutorId,LessonTypeId,InstrumentId,LessonDateTime,Paid")] LessonModel lessonModel)
         {
             if (id != lessonModel.LessonId)
             {
@@ -219,6 +233,8 @@ namespace s318344_Assignment1.Controllers
             ViewData["LessonTypeId"] = new SelectList(_context.Set<LessonTypeModel>(), "LessonTypeId", "LessonTypeFullName", lessonModel.LessonTypeId);
             ViewData["StudentId"] = new SelectList(_context.Set<StudentModel>(), "StudentID", "PaymentContactNumber", lessonModel.StudentId);
             ViewData["TutorId"] = new SelectList(_context.Set<TutorModel>(), "TutorId", "TutorName", lessonModel.TutorId);
+            ViewData["InstrumentId"] = new SelectList(_context.Set<InstrumentModel>(), "InstrumentId", "Instrument", lessonModel.InstrumentId);
+
             return View(lessonModel);
         }
 
@@ -234,6 +250,7 @@ namespace s318344_Assignment1.Controllers
                 .Include(l => l.LessonType)
                 .Include(l => l.Student)
                 .Include(l => l.Tutor)
+                .Include(l => l.Instrument)
                 .FirstOrDefaultAsync(m => m.LessonId == id);
             if (lessonModel == null)
             {
@@ -274,7 +291,7 @@ namespace s318344_Assignment1.Controllers
 
             if (!String.IsNullOrEmpty(SearchSurname))
             {
-                students = students.Where(s => s.StudentLastName.Contains(SearchSurname));
+                students = students.Where(s => s.StudentLastName.Contains(SearchSurname)).OrderBy(s=>s.StudentFirstName + " "+ s.StudentLastName);
             }
 
             ViewBag.ReturnTo = ReturnToAction;

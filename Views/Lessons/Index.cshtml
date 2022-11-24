@@ -1,4 +1,4 @@
-﻿@model IEnumerable<s318344_Assignment1.Models.LessonModel>
+﻿@model IEnumerable<Group9_Assignment2.Models.LessonModel>
 
 @{
     ViewData["Title"] = "Lessons";
@@ -109,7 +109,11 @@
             </th>
 
             <th>
-                    @Html.ActionLink( Html.DisplayNameFor(model => model.LessonDateTime) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId,  orderBy = "LessonDateTime", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+                        @Html.ActionLink( Html.DisplayNameFor(model => model.Instrument.Instrument) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId, orderBy = "Instrument", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+            </th>
+
+            <th>
+                        @Html.ActionLink( Html.DisplayNameFor(model => model.LessonDateTime) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId,  orderBy = "LessonDateTime", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
             </th>
 
             <th>
@@ -123,6 +127,10 @@
             <th>
                     @Html.ActionLink( Html.DisplayNameFor(model => model.Paid) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId, orderBy = "Paid", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
             </th>
+
+            <th>
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.Letter.letterReference) , "Index", new { SelectedStudentId = ViewBag.SelectedStudentId, SelectedTutorId = ViewBag.SelectedTutorId, orderBy = "Paid", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+                </th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -144,6 +152,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.LessonType.LessonTypeFullName)
                 </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Instrument.Instrument)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LessonDateTime)
                 </td>
@@ -161,6 +173,12 @@
                 </td>
 
                 <td>
+
+                    @*I know I've hit the bottom of the Razor barrel when the action link won't let me use DisplayFor without formal paramters that arnt required in every other actionlink*@
+                            @Html.ActionLink( item.LetterId == null ? "" : item.Letter.letterReference , "Details", "Letters", new {Id = item.LetterId == null ? null : item.LetterId})
+                </td>
+
+                <td>
                     <div class="dropdown">
                             <button class="btn " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 
@@ -173,7 +191,7 @@
                             <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.LessonId">Edit</a>
                             <a class="dropdown-item" asp-action="Details" asp-route-id="@item.LessonId">Details</a>
                             <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.LessonId">Delete</a>
-                        </div>
+                       </div>
                     </div>
 
                 </td>
@@ -199,7 +217,7 @@
 
     function selectAll() {
 
-            $('input[type="checkbox"]:not(:disabled)').each(function () {
+            $('table input[type="checkbox"]:not(:disabled)').each(function () {
                 $(this).prop('checked', $("#selectall").is(':checked'));
             });
     }

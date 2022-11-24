@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using s318344_Assignment1.Data;
-using s318344_Assignment1.Models;
+using Group9_Assignment2.Data;
+using Group9_Assignment2.Models;
 
-namespace s318344_Assignment1.Controllers
+namespace Group9_Assignment2.Controllers
 {
     public class TutorsController : Controller
     {
-        private readonly s318344_Assignment1Context _context;
+        private readonly Group9_Assignment2Context _context;
 
-        public TutorsController(s318344_Assignment1Context context)
+        public TutorsController(Group9_Assignment2Context context)
         {
             _context = context;
         }

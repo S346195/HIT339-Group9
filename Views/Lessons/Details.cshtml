@@ -1,4 +1,4 @@
-﻿@model s318344_Assignment1.Models.LessonModel
+﻿@model Group9_Assignment2.Models.LessonModel
 
 @{
     ViewData["Title"] = "Details - Lesson";
@@ -33,6 +33,12 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.LessonType.LessonTypeId)
+        </dd>
+                <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Instrument)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Instrument.InstrumentId)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.LessonDateTime)

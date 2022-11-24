@@ -1,7 +1,71 @@
-﻿
+﻿@model IEnumerable<Group9_Assignment2.Models.LetterModel>
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
 
+    <h1 class="text-white">Letters</h1>
+
+</div>
+
+<div class="container-fluid p-3 ">
+    <table class="table table-hover " style=" word-wrap: break-word;">
+        <thead>
+            <tr>
+                <th>
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.LetterCreationDate) , "Index", new { StudentId = ViewBag.StudentId, LetterId = ViewBag.LetterId, orderBy = "created", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+                </th>
+
+                <th>
+                    @Html.ActionLink( "Reference" , "Index", new { StudentId = ViewBag.StudentId, LetterId = ViewBag.LetterId, orderBy = "reference", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+                </th>
+
+                <th>
+                    @Html.ActionLink( Html.DisplayNameFor(model => model.Student.StudentFullName) , "Index", new { StudentId = ViewBag.StudentId ,  LetterId = ViewBag.LetterId, orderBy = "student", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+                </th>
+                <th>
+                    @Html.ActionLink("Sent to" , "Index", new { StudentId = ViewBag.StudentId ,  LetterId = ViewBag.LetterId, orderBy = "sent", order = ViewBag.order == "asc" ? "desc" : "asc"}, new {@class = "text-decoration-none text-black"})
+
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Paid)
+                </th>
+
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LetterCreationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.letterReference)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.StudentFullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.PaymentContactEmail)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Paid)
+                    </td>
+
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.LetterId">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>

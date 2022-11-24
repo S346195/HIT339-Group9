@@ -1,22 +1,24 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
 
-namespace s318344_Assignment1.Models
+namespace Group9_Assignment2.Models
 {
     public class LetterModel
     {
         [Key]
         public int LetterId { get; set; }
 
+        //Note: This is not a unique reference, would need to add student ID.
+        [Display(Name = "Related letter")]
         public string letterReference
         {
             get
             {
-                return CurrentYear + Student.StudentLastName.ToUpper() + LetterId;
+                return DateTime.Today.Year + Student.StudentLastName.ToUpper() + LetterId;
             }
         }
+
+
 
         [Required]
         public int StudentId { get; set; }
@@ -26,86 +28,10 @@ namespace s318344_Assignment1.Models
         public List<LessonModel> Lessons { get; set; }
 
         [Required]
+        [Display(Name = "Created")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime LetterCreationDate { get; set; }
 
-
-        // User-entered fields
-
-        [Display(Name = "Opening statement")]
-        public string BeginningComment { get; set; }
-
-        [Display(Name = "Signature")]
-        [Required]
-        public string EmailSignature { get; set; }
-
-        [Display(Name = "Bank")]
-        [Required]
-        public string BankName { get; set; }
-        
-        [Display(Name = "Account name")]
-        [Required]
-        public string BankAccountName { get; set; }
-
-        [Display(Name = "BSB")]
-        [Required]
-        [RegularExpression(@"^[0-9]{6}$", ErrorMessage = "Please enter a valid 6-digit BSB")]
-        public string BankAccountBSB { get; set; }
-
-        [Display(Name = "Account number")]
-        [Required]
-        [RegularExpression(@"^[0-9]$", ErrorMessage = "Please enter a valid account number")]
-        public string BankAccountNumber { get; set; }
-
-
-        //Fields generated as at time of letter generation.
-
-        public int CurrentTerm
-        {
-            get
-            {
-                return (LetterCreationDate.Month + 3) / 4;
-            }
-        }
-
-        //This would be better achieved by having a seperate table that defines term dates. It'll do for now.
-
-        public DateOnly CurrentTermStart
-        {
-            get
-            {
-                return (new DateOnly(LetterCreationDate.Year, CurrentTerm, 1));
-
-            }
-        }
-
-        //1 month from time letter is created
-
-
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateOnly PaymentFinal
-        {
-            get
-            {
-                DateTime nextMonth = LetterCreationDate.AddMonths(1);
-                return new DateOnly(nextMonth.Year, nextMonth.Month, nextMonth.Day);
-            }
-        }
-
-        public int CurrentSemester
-        {
-            get
-            {
-                return (LetterCreationDate.Month + 5) / 6;
-            }
-        }
-
-        public int CurrentYear
-        {
-            get
-            {
-                return LetterCreationDate.Year;
-            }
-        }
 
         [Required]
         [Display(Name = "Outstanding balance")]
@@ -130,7 +56,6 @@ namespace s318344_Assignment1.Models
         
         }
 
-
         //An invoice will be considered paid if all the related lessons each have a staus of paid.
         public Boolean Paid { 
             
@@ -145,9 +70,35 @@ namespace s318344_Assignment1.Models
                 }
                 return true;
             }
-                
-                
             }
+
+        public string RawLetterContent
+        {
+            set
+            {
+                //Payment link edited to better match the fields in the webpay form
+                string PaymentLink = "https://webpay.cdu.edu.au/musicschool/tran?tran-type=006&REFNO="
+                                        + letterReference + "&CUSTNAME=" + Student.StudentFullName + "&PARENTSNAME=" + Student.GuardianName + "&UNITAMOUNTINCTAX=" + String.Format("{0:N2}", OutstandingBalance);
+
+                string PaymentHyperlink = "<a href = '" + PaymentLink + "'>link</a>";
+
+                _LetterContent =
+                    "<!doctype html><head><meta charset=\"utf-8\"</head><body>"+
+
+                    value   
+                    .Replace("{{Student First Name}}", Student.StudentFirstName)
+                    .Replace("{{Student Last Name}}", Student.StudentLastName)
+                    .Replace("{{Student Full Name}}", Student.StudentFullName)
+                    .Replace("{{Guardian}}", Student.GuardianName)
+                    .Replace("{{Reference}}", letterReference)
+                    .Replace("{{Outstanding Balance}}", String.Format("${0:N2}", OutstandingBalance))
+                    .Replace("{{Payment Link}}", PaymentHyperlink)
+                    
+
+                +"</body></html>";
+            }
+        }
+        public string _LetterContent { get; set; }
 
     }
 }

@@ -24,3 +24,48 @@ body {
 .icon:hover {
     fill: #DA4567;
 }
+
+.letter p {
+    margin-top: 16pt;
+}
+
+.letter mark {
+    padding: 0px;
+}
+
+.letter em {
+    
+    margin-top: 16pt;
+    margin-bottom: 16pt;
+}
+
+#MailSendingImg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#MailSendingBg {
+    z-index: 21;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0, 0, 0, 0.5);
+}
+
+#MailSendingText {
+    color: white;
+    position: fixed;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-backdrop {
+    z-index: 20;
+}

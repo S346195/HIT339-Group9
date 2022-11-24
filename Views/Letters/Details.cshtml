@@ -1,0 +1,27 @@
+﻿@model Group9_Assignment2.Models.LetterModel
+
+@{
+    ViewData["Title"] = "Details - Letter";
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Letter details</h1>
+    <h2>@Model.letterReference</h2>
+    <h3>Sent: @Html.DisplayFor(l=>Model.LetterCreationDate)</h3>
+
+    @*Ability to edit letter deliberatly missing with the preference being that a new letter is generated instead.*@
+    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.LetterId">Delete</a>
+    <a class="btn btn-outline-light" asp-action="Index">Back</a>
+
+</div>
+
+<div class="container-fluid p-3">
+
+    <div id="LetterContent">
+        @Html.Raw(Model._LetterContent)
+    </div>
+
+    @*Unable to show lessons related to letter as the List<> of lessons in the letter model is wiped when a new letter is added. Unsure why.*@
+
+</div>

@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using s318344_Assignment1.Data;
-using s318344_Assignment1.Models;
+using Group9_Assignment2.Data;
+using Group9_Assignment2.Models;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<s318344_Assignment1Context>(options =>
+builder.Services.AddDbContext<Group9_Assignment2Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("s318344_Assignment1Context") ?? throw new InvalidOperationException("Connection string 's318344_Assignment1Context' not found.")));
 
 builder.Services.AddControllers().AddJsonOptions(x =>

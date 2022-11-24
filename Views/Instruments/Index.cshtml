@@ -1,4 +1,4 @@
-﻿@model IEnumerable<s318344_Assignment1.Models.InstrumentModel>
+﻿@model IEnumerable<Group9_Assignment2.Models.InstrumentModel>
 
 @{
     ViewData["Title"] = "Instruments";
@@ -53,6 +53,7 @@
                                 <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.InstrumentId">Edit</a>
                                 <a class="dropdown-item" asp-action="Details" asp-route-id="@item.InstrumentId">Details</a>
                                 <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.InstrumentId">Delete</a>
+                                <a class="dropdown-item" asp-action="Index" asp-controller="Lessons" asp-route-SelectedInstrumentId="@item.InstrumentId">Lessons</a>
 
                             </div>
                         </div>

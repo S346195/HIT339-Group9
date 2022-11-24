@@ -1,0 +1,33 @@
+﻿@model Group9_Assignment2.Models.LetterModel
+
+@{
+    ViewData["Title"] = "Delete - Letter";
+}
+
+<div class=" bg-primary p-4" style="border-top-left-radius: 2em; border-top-right-radius: 2em;">
+
+    <h1 class="text-white">Delete</h1>
+    <h2 class="text-dark"> Are you sure you want to delete this record? </h2>
+
+
+        <form asp-action="Delete">
+        <input type="hidden" asp-for="LetterId" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a class="btn btn-outline-dark" asp-action="Index">Back</a>
+    </form>
+
+    
+
+
+</div>
+
+<div class="container-fluid p-3">
+
+    <div id="LetterContent">
+        @Html.Raw(Model._LetterContent)
+    </div>
+
+
+    @*Unable to show lessons related to letter as the List<> of lessons in the letter model is wiped when a new letter is added. Unsure why.*@
+
+</div>

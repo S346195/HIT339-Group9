@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace s318344_Assignment1.Models
+namespace Group9_Assignment2.Models
 {
     public class InstrumentModel
     {

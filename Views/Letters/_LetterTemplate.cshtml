@@ -1,0 +1,90 @@
+﻿@*
+    The following code creates the template letter used in the /Letters/Generate page.
+
+    Text in the form {{Field Name}} represent model fields to be inserted at time of letter creation. 
+    
+    Available fields:
+        {{Student First Name}} = Returns the student's first name
+        {{Student Last Name}} = Returns the student's last name
+        {{Student Full Name}} = Returns the student's full name
+        {{Guardian}} = Returns the name of the student's guardian
+        {{Reference}} = Returns the letter's reference number
+        {{Outstanding Balance}} = Returns the payment due for the selected lessons
+        {{Payment Link}} = Returns a <a> hyperlink to take the user to the CDU payment site
+
+*@
+
+<div id="letter" class="p-4" data-letterID = Model.LetterId>
+
+    <h1><em><strong>REFERENCE: <span class="ModelField">{{Reference}}</span></strong></em></h1>
+
+    <p>
+        Dear <span class="ModelField">{{Student First Name}}</span>,
+    </p>
+
+    <p>
+        Welcome to all existing students and new students. Term @ViewBag.CurrentTerm will commence @ViewBag.CurrentTermStart.
+        Please ensure your payment is finalised by @ViewBag.PaymentDue. If a student is no longer attending
+        lessons, please email the CYCM to be removed off the email list.
+    </p>
+
+    <p>
+        Don't forget to apply for your Sport Voucher for semester @(ViewBag.CurrentTerm / 2), @ViewBag.CurrentTermStart.Year by visiting the <a href="http://www.sportvoucher.nt.gov.au">Sports Voucher website</a>, as schools are no longer providing students with a sport voucher.
+    </p>
+
+    <h2> <strong>PAYMENT DETAILS</strong></h2>
+
+    <ul style="list-style: none; padding: 0;">
+        <li><strong>Reference: <span class="ModelField">{{Reference}}</span></strong></li>
+        <li>
+            <strong>Student: <span class="ModelField">{{Student Full Name}}</span></strong>
+        </li>
+        <li>
+            <strong>Outstanding balance: <span class="ModelField">{{Outstanding Balance}}</span></strong>
+        </li>
+    </ul>
+
+    <p>
+        
+        Please follow the <span class="ModelField">{{Payment Link}}</span> to make payment for term @ViewBag.CurrentTerm, @ViewBag.CurrentTermStart.Year. 
+        Alternatively you can pay via Bank Transfer (EFT) using CDU's bank details below.
+    </p>
+
+    @*Payment hyperlink tweaked from specifications to correctly supply payment amount and supply student's name in a more human-friendly format.*@
+
+    <h3><strong>New bank details</strong></h3>
+
+    <mark><em>Our payment details have change, please delete any old details.</em></mark>
+
+
+    <ul style="list-style: none; padding: 0;">
+        <li>
+            <strong>Bank: CMYC   </strong>
+        </li>
+        <li>
+            <strong>Account Name: ING   </strong>
+        </li>
+        <li>
+            <strong>BSB Number: 095211   </strong>
+        </li>
+        <li>
+            <strong>Account Number: 9874682   </strong>
+        </li>
+        <li>
+            <strong>Reference: CYCM <span class="ModelField">{{Reference}}</span> <span class="ModelField">{{Student Full Name}}</span>   </strong>
+        </li>
+    </ul>
+ 
+
+    <em>
+        The CYCM is committed to providing students with quality lessons in a positive learning environment.
+    </em>
+
+    <p>
+        Regards,
+    </p>
+    <em>
+        Enter your name here
+    </em>
+
+</div>

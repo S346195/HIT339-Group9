@@ -1,4 +1,5 @@
-﻿@model IEnumerable<s318344_Assignment1.Models.StudentModel>
+﻿@model IEnumerable<Group9_Assignment2.Models.StudentModel>
+
 
 @{
     ViewData["Title"] = "Students";
@@ -111,8 +112,9 @@
                                 <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.StudentID">Edit</a>
                                 <a class="dropdown-item" asp-action="Details" asp-route-id="@item.StudentID">Details</a>
                                 <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.StudentID">Delete</a>
-                                <a class="dropdown-item" asp-action="Index" asp-controller="Lessons" asp-route-SelectedStudentId="@item.StudentID">View lessons</a>
+                                <a class="dropdown-item" asp-action="Index" asp-controller="Lessons" asp-route-SelectedStudentId="@item.StudentID">Lessons</a>
                                 <a class="dropdown-item" asp-action="Create" asp-controller="Lessons" asp-route-SelectedStudentID="@item.StudentID">Create lesson</a>
+                                <a class="dropdown-item" asp-action="Index" asp-controller="Letters" asp-route-StudentId="@item.StudentID">View letters</a>
 
                             </div>
                         </div>

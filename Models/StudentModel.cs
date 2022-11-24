@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace s318344_Assignment1.Models
+namespace Group9_Assignment2.Models
 {
     public class StudentModel
     {

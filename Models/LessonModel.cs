@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
-namespace s318344_Assignment1.Models
+namespace Group9_Assignment2.Models
 {
     public class LessonModel
     {
@@ -13,6 +13,10 @@ namespace s318344_Assignment1.Models
         [Required]
         public int StudentId { get; set; }
         public virtual StudentModel? Student { get; set; }
+
+        [Required]
+        public int InstrumentId { get; set; }
+        public virtual InstrumentModel? Instrument { get; set; }
 
         [Required]
         public int TutorId { get; set; }
@@ -41,6 +45,7 @@ namespace s318344_Assignment1.Models
 
         public Boolean Paid { get; set; }
 
+        
         public int? LetterId { get; set; }
         public virtual LetterModel? Letter { get; set; }
 
